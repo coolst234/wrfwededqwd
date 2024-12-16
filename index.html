@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campfire for you</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: aliceblue;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    .content {
+      text-align: center;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeIn 1s ease-in-out forwards;
+    }
+
+    .content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .content p {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .fire {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30%;
+      background-image: url('fire.gif');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      z-index: 0;
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <h1 id="title">секретное сообщение</h1>
+      <p id="text">ты не должна была это видеть</p>
+    </div>
+    <div class="fire"></div>
+  </div>
+
+  <script>
+    const texts = [
+  { title: "Спасибо,", text: "что ты есть в моей жизни" },
+  { title: "Каждое мгновение,", text: "проведенное с тобой, бесценно" },
+  { title: "Спасибо", text: "за твою заботу" },
+  { title: "С тобой", text: "я чувствую себя лучше" },
+  { title: "Я дорожу", text: "тобой" },
+  { title: "Я счастлив,", text: "что могу разделить с тобой впечатления" },
+  { title: "Спасибо", text: "за твое доверие. Я никогда его не подведу." },
+  { title: "Я ценю", text: "все, что ты делаешь для меня" },
+  { title: "Я горжусь", text: "тобой" },
+  { title: "С тобой", text: "я становлюсь лучше" },
+  { title: "Иногда", text: "ты придаешь смысл моим дням" },
+  { title: "Ты моя", text: "последняя мысль перед сном" },
+  { title: "Благодаря тебе", text: "я улыбаюсь чаще" },
+  { title: "Твое присутствие", text: "приносит мне радость" },
+  { title: "Слышать твой смех -", text: "самое приятное в мире" },
+  { title: "Я верю", text: "в тебя" },
+  { title: "Я с тобой", text: "рядом" },
+  { title: "Ты делаешь", text: "мою жизнь лучше" },
+  { title: "Ты делаешь", text: "меня счастливым" },
+  { title: "Ты перечитываешь", text: "эти сообщения? Прикольно. " },
+  { title: "То, что считается сном", text: "точь-в-точь выглядит, как ты." },
+];
+
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function setCookie(name, value, days) {
+      const date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
+    }
+
+    function getNextTextIndex() {
+      let currentIndex = parseInt(getCookie('textIndex')) || 0;
+      currentIndex = (currentIndex + 1) % texts.length;
+      setCookie('textIndex', currentIndex, 7);
+      return currentIndex;
+    }
+
+    window.addEventListener('load', () => {
+      const currentIndex = getNextTextIndex();
+      const { title, text } = texts[currentIndex];
+      document.getElementById('title').textContent = title;
+      document.getElementById('text').textContent = text;
+    });
+  </script>
+</body>
+</html>
